@@ -1,7 +1,5 @@
 name: Release
 
-# Manually publish the plugin to TRMNL from the Actions tab.
-# Requires the TRMNL_API_KEY repository secret.
 on:
   workflow_dispatch:
 
