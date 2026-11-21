@@ -1,0 +1,45 @@
+#
+# Changes to this file will be overwritten by `trmnlp pull`.
+#
+# Docs: https://help.trmnl.com/en/articles/10542599-importing-and-exporting-private-plugins#h_581fb988f0
+#
+---
+strategy: polling
+no_screen_padding: 'no'
+dark_mode: 'no'
+static_data: ''
+polling_verb: get
+framework_version: latest
+polling_url: |-
+  https://templeosrs.com/api/collection-log/player_collection_log.php?player={{ rsn | url_encode }}&categories=all&onlyitems=1
+  https://templeosrs.com/api/collection-log/player_recent_items.php?player={{ rsn | url_encode }}&count=12&onlynotable={{ only_notable | default: 0 }}
+  https://templeosrs.com/api/collection-log/categories.php
+polling_headers: 'User-Agent=TRMNL-OSRS-Collection-Log/1.0'
+name: OSRS Collection Log
+description: 'OSRS Collection Log overview'
+refresh_interval: 60
+custom_fields:
+  - keyname: author_bio
+    field_type: author_bio
+    name: About This Plugin
+    category: games
+    description: >-
+      Displays your Old School RuneScape Collection Log overview, category progress,
+      rank tier, and latest collection log drops powered by TempleOSRS. Requires
+      syncing your Collection Log with the TempleOSRS RuneLite plugin.
+    learn_more_url: https://templeosrs.com/collection-log/
+  - keyname: rsn
+    field_type: string
+    name: RuneScape Name (RSN)
+    description: Your OSRS username synced with TempleOSRS.
+    placeholder: Mikael
+    maxlength: 12
+    default: Mikael
+  - keyname: only_notable
+    field_type: select
+    name: Recent Drops Filter
+    description: Show all recent collection log drops or only notable drops (pets, rare clues, etc.).
+    options:
+      - All Drops: '0'
+      - Notable Only: '1'
+    default: '0'

@@ -1,0 +1,11 @@
+---
+watch:
+- ".trmnlp.yml"
+- src
+custom_fields:
+  rsn: wide juicy
+  only_notable: '0'
+variables:
+  trmnl:
+    plugin_settings:
+      instance_name: Collection Log

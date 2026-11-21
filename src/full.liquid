@@ -1,0 +1,81 @@
+{% if ok %}
+<div class="layout layout--col layout--stretch-x gap--auto">
+  <!-- Top Row: 5 OSRS Collection Log Category Cards -->
+  <div class="grid grid--cols-5 portrait:grid--cols-3 gap--small w--full">
+    {% for cat in categories %}
+    <div class="osrs-card rounded--small bg--gray-75 p--2 flex flex--col flex--center-x gap--xsmall">
+      <span class="label label--small text--center" data-clamp="1">{{ cat.name }}</span>
+      <img class="image image-dither osrs-sprite osrs-cat-icon" src="{{ cat.icon_url }}" alt="{{ cat.name }}">
+      <span class="value value--xxsmall value--tnums text--center">{{ cat.obtained }}/{{ cat.total }}</span>
+      <div class="osrs-bar-wrap">
+        {% render "osrs_progress_bar", bar_class: "progress-bar--small", show_header: false, pct: cat.pct %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Middle Row: Rank Progression -->
+  <div class="flex flex--row flex--center-y gap--medium w--full">
+    <div class="osrs-rank-col flex flex--col flex--center-x gap--xsmall">
+      <div class="osrs-book-frame rounded--small bg--gray-75 flex flex--center">
+        <img class="image image-dither osrs-sprite osrs-book-icon" src="{{ current_rank.icon_url }}" alt="{{ current_rank.name }}">
+      </div>
+      <span class="label label--small osrs-rank-label text--center">{{ current_rank.label }}</span>
+    </div>
+
+    <div class="osrs-flex-grow flex flex--col gap--xsmall">
+      <div class="osrs-bar-wrap">
+        {% capture rank_bar_label %}Collections Logged: {{ total_finished }}/{{ bar_target }}{% endcapture %}
+        {% capture rank_bar_val %}{{ rank_pct }}%{% endcapture %}
+        {% render "osrs_progress_bar", bar_class: "progress-bar--large", show_header: true, bar_label: rank_bar_label, bar_value: rank_bar_val, pct: rank_pct %}
+      </div>
+      <div class="flex flex--row flex--between w--full">
+        <span class="label label--small">{{ total_finished }}/{{ total_available }} Total ({{ overall_pct }}%)</span>
+        <span class="label label--small">
+          {% if cats_available > 0 %}{{ cats_finished }}/{{ cats_available }} Greenlogged{% endif %}
+          {% if hiscores_rank %} &middot; Rank {{ hiscores_rank }}{% endif %}
+        </span>
+      </div>
+    </div>
+
+    <div class="osrs-rank-col flex flex--col flex--center-x gap--xsmall">
+      <div class="osrs-book-frame rounded--small bg--gray-75 flex flex--center">
+        <img class="image image-dither osrs-sprite osrs-book-icon" src="{{ next_rank.icon_url }}" alt="{{ next_rank.name }}">
+      </div>
+      <span class="label label--small osrs-rank-label text--center">{{ next_rank.label }}</span>
+    </div>
+  </div>
+
+  <!-- Bottom Row: Latest Collections (12 most recent items) -->
+  <div class="flex flex--col gap--xsmall w--full">
+    <div class="flex flex--row flex--between flex--center-y w--full">
+      <span class="label label--small">Latest Collections{% if only_notable %} (Notable){% endif %}</span>
+      {% if last_updated != "" %}
+      <span class="label label--small">Synced {{ last_updated }}</span>
+      {% endif %}
+    </div>
+    <div class="osrs-tray rounded--small bg--gray-75 p--2 w--full">
+      {% if recent_count > 0 %}
+      <div class="grid grid--cols-12 portrait:grid--cols-6 gap--xsmall w--full">
+        {% for item in recent_items limit: 12 %}
+        <div class="flex flex--col flex--center">
+          <img class="image image-dither osrs-sprite osrs-drop-icon" src="{{ item.icon_url }}" alt="{{ item.name }}">
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="flex flex--center p--2">
+        <span class="description">No new drops logged since initial TempleOSRS sync.</span>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% capture title_text %}Collection Log: Overview for {{ player_name }}{% endcapture %}
+{% capture instance_text %}Account Type {{ game_mode }}: {{ total_finished }}/{{ total_available }}{% endcapture %}
+{% render "osrs_title_bar", book_icon_url: book_icon_url, title_text: title_text, instance_text: instance_text %}
+{% else %}
+{% render "osrs_error_state", book_icon_url: book_icon_url, error: error %}
+{% render "osrs_title_bar", book_icon_url: book_icon_url, title_text: "OSRS Collection Log", instance_text: player_name %}
+{% endif %}

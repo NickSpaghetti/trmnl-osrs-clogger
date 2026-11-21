@@ -1,0 +1,9 @@
+.git
+.github
+_build
+report
+README.md
+Makefile
+tests.yaml
+__pycache__
+*.py[cod]

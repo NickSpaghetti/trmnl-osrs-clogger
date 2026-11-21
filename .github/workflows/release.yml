@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Build development image
+        run: make build-dev
+      - name: trmnlp lint
+        run: make lint
+      - name: trmnlp test
+        env:
+          CI: "true"
+        run: make plugin-test
+
+  publish:
+    needs: verify
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - uses: actions/checkout@v7
+      - name: Build development image
+        run: make build-dev
+      - name: Publish to TRMNL
+        env:
+          TRMNL_API_KEY: ${{ secrets.TRMNL_API_KEY }}
+        run: make publish
