@@ -23,8 +23,8 @@ TempleOSRS only lists items in **Latest Collections** that were obtained *after*
 
 | Setting | Description |
 | --- | --- |
-| **RuneScape Name (RSN)** | Your OSRS name as synced on TempleOSRS (spaces are fine, e.g. `Iron 3 Hit`) |
-| **Recent Drops Filter** | `All Drops`, or `Notable Only` (pets, rare clue items and other significant drops) |
+| **RuneScape Name (RSN)** | Your OSRS name as synced on TempleOSRS |
+| **Recent Drops Filter** | `All Drops`, or `Notable Only` pets, rare clue items and other significant drops |
 
 The plugin refreshes every 60 minutes.
 
