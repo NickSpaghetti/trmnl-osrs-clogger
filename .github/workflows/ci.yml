@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Build development image
+        run: make build-dev
+      - name: trmnlp lint
+        run: make lint
+      - name: trmnlp test
+        env:
+          CI: "true"
+        run: make plugin-test
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: trmnlp-report
+          path: report

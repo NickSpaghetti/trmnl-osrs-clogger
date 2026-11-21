@@ -1,0 +1,55 @@
+{% if ok %}
+<div class="layout layout--col layout--stretch-x gap--auto">
+  <!-- Top Band: Rank Progress -->
+  <div class="osrs-no-shrink flex flex--row flex--center-y gap--small w--full">
+    <div class="osrs-book-frame--sm rounded--small bg--gray-75 flex flex--center">
+      <img class="image image-dither osrs-sprite osrs-book-icon--sm" src="{{ current_rank.icon_url }}" alt="{{ current_rank.name }}">
+    </div>
+    <div class="osrs-flex-grow osrs-bar-wrap">
+      {% capture rank_bar_label %}{{ current_rank.label }} &rarr; {{ next_rank.label }}{% endcapture %}
+      {% capture rank_bar_val %}{{ total_finished }}/{{ bar_target }}{% endcapture %}
+      {% render "osrs_progress_bar", bar_class: "progress-bar--small", show_header: true, bar_label: rank_bar_label, bar_value: rank_bar_val, pct: rank_pct %}
+    </div>
+    <div class="osrs-book-frame--sm rounded--small bg--gray-75 flex flex--center">
+      <img class="image image-dither osrs-sprite osrs-book-icon--sm" src="{{ next_rank.icon_url }}" alt="{{ next_rank.name }}">
+    </div>
+  </div>
+
+  <!-- Middle Band: 5 Category Counters (single line each) -->
+  <div class="osrs-no-shrink grid grid--cols-5 gap--xsmall w--full">
+    {% for cat in categories %}
+    <div class="osrs-card rounded--small bg--gray-75 p--1 flex flex--row flex--center gap--xsmall">
+      <img class="image image-dither osrs-sprite osrs-cat-icon--sm" src="{{ cat.icon_url }}" alt="{{ cat.name }}">
+      <div class="flex flex--col">
+        <span class="label label--small">{{ cat.name }}</span>
+        <span class="label label--small value--tnums">{{ cat.obtained }}/{{ cat.total }}</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Bottom Band: Latest Collections Strip -->
+  <div class="osrs-tray rounded--small bg--gray-75 p--1 w--full flex flex--center-y">
+    {% if recent_count > 0 %}
+    <div class="osrs-drop-row w--full">
+      {% for item in recent_items limit: 10 %}
+      <div class="osrs-drop-slot">
+        <img class="image image-dither osrs-sprite osrs-drop-icon--sm" src="{{ item.icon_url }}" alt="{{ item.name }}">
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="flex flex--center p--1 w--full">
+      <span class="label label--small">No recent drops since initial sync</span>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+{% capture title_text %}Collection Log: {{ player_name }}{% endcapture %}
+{% capture instance_text %}Account Type {{ game_mode }}: {{ total_finished }}/{{ total_available }}{% endcapture %}
+{% render "osrs_title_bar", book_icon_url: book_icon_url, title_text: title_text, instance_text: instance_text %}
+{% else %}
+{% render "osrs_error_state", book_icon_url: book_icon_url, error: error %}
+{% render "osrs_title_bar", book_icon_url: book_icon_url, title_text: "OSRS Collection Log", instance_text: player_name %}
+{% endif %}

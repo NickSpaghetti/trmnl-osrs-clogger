@@ -1,0 +1,129 @@
+<style>
+  .osrs-sprite {
+    image-rendering: pixelated;
+    object-fit: contain;
+    display: block;
+  }
+  .osrs-cat-icon {
+    width: calc(36px * var(--ui-scale, 1));
+    height: calc(36px * var(--ui-scale, 1));
+  }
+  .osrs-book-icon {
+    width: calc(40px * var(--ui-scale, 1));
+    height: calc(40px * var(--ui-scale, 1));
+  }
+  .osrs-book-icon--sm {
+    width: calc(28px * var(--ui-scale, 1));
+    height: calc(28px * var(--ui-scale, 1));
+  }
+  .osrs-drop-icon {
+    width: calc(36px * var(--ui-scale, 1));
+    height: calc(36px * var(--ui-scale, 1));
+  }
+  .osrs-drop-icon--sm {
+    width: calc(28px * var(--ui-scale, 1));
+    height: calc(28px * var(--ui-scale, 1));
+  }
+  .osrs-cat-icon--sm {
+    width: calc(22px * var(--ui-scale, 1));
+    height: calc(22px * var(--ui-scale, 1));
+  }
+  .osrs-book-frame {
+    width: calc(56px * var(--ui-scale, 1));
+    height: calc(56px * var(--ui-scale, 1));
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--framework-text-primary, #000);
+  }
+  .osrs-book-frame--sm {
+    width: calc(40px * var(--ui-scale, 1));
+    height: calc(40px * var(--ui-scale, 1));
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--framework-text-primary, #000);
+  }
+  .osrs-rank-col {
+    flex: 0 0 auto;
+    min-width: calc(76px * var(--ui-scale, 1));
+    align-items: center;
+  }
+  .osrs-rank-label {
+    white-space: nowrap;
+  }
+  .osrs-flex-grow {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .osrs-drop-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    overflow: visible;
+  }
+  .osrs-drop-slot {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(36px * var(--ui-scale, 1));
+    height: calc(36px * var(--ui-scale, 1));
+    overflow: visible;
+  }
+  .osrs-drop-slot img {
+    max-width: none;
+    max-height: none;
+    flex-shrink: 0;
+  }
+  .osrs-card {
+    border: 2px solid var(--framework-text-primary, #000);
+  }
+  .osrs-tray {
+    border: 2px solid var(--framework-text-primary, #000);
+    flex: 0 0 auto;
+    min-height: calc(48px * var(--ui-scale, 1));
+  }
+  .osrs-no-shrink {
+    flex: 0 0 auto;
+  }
+  .osrs-bar-wrap,
+  .osrs-bar-wrap .progress-bar {
+    width: 100%;
+  }
+  .screen--dark-mode .osrs-sprite {
+    filter: drop-shadow(1px 0 0 #fff) drop-shadow(-1px 0 0 #fff) drop-shadow(0 1px 0 #fff) drop-shadow(0 -1px 0 #fff);
+  }
+</style>
+
+{% template osrs_progress_bar %}
+<div class="progress-bar w--full {{ bar_class }}">
+  {% if show_header %}
+  <div class="content">
+    <span class="label label--small">{{ bar_label }}</span>
+    <span class="value value--xxsmall value--tnums">{{ bar_value }}</span>
+  </div>
+  {% endif %}
+  <div class="track">
+    <div class="fill" style="width: {{ pct }}%"></div>
+  </div>
+</div>
+{% endtemplate %}
+
+{% template osrs_title_bar %}
+<div class="title_bar">
+  <img class="image osrs-sprite" src="{{ book_icon_url }}" alt="Collection Log">
+  <span class="title">{{ title_text }}</span>
+  <span class="instance">{{ instance_text }}</span>
+</div>
+{% endtemplate %}
+
+{% template osrs_error_state %}
+<div class="layout layout--col layout--center gap--small p--4">
+  <img class="image image-dither osrs-sprite osrs-book-icon" src="{{ book_icon_url }}" alt="Collection Log">
+  <span class="title title--small text--center">Collection Log Unavailable</span>
+  <span class="description text--center" data-clamp="3">{{ error }}</span>
+  <span class="label label--small label--outline">Sync via TempleOSRS RuneLite Plugin</span>
+</div>
+{% endtemplate %}
