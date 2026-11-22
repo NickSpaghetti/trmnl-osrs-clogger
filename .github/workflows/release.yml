@@ -35,4 +35,5 @@ jobs:
       - name: Publish to TRMNL
         env:
           TRMNL_API_KEY: ${{ secrets.TRMNL_API_KEY }}
+          TRMNL_PLUGIN_ID: ${{ vars.TRMNL_PLUGIN_ID }}
         run: make publish

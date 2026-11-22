@@ -2,6 +2,8 @@
 
 A [TRMNL](https://trmnl.com) plugin that shows your Old School RuneScape **Collection Log** on your e-ink display, styled after the in-game Collection Log Overview:
 
+![Full view: Collection Log overview for Wide Juicy](assets/OsrsCloggerFull.png)
+
 - **Bosses, Raids, Clues, Minigames and Other**: obtained / total slots for each, with progress bars
 - **Collection Log rank**: your current rank book (Bronze → Gilded), the next rank, and progress toward it
 - **Totals**: slots logged, categories completed ("greenlogged") and your hiscores rank
@@ -39,13 +41,23 @@ The plugin refreshes every 60 minutes.
 
 All views support TRMNL OG and TRMNL X, landscape and portrait, 1-bit / 2-bit / 4-bit, and dark mode.
 
+### Half Horizontal
+
+![Half Horizontal view](assets/OsrsCloggerHalfHeight.png)
+
+### Half Vertical and Quadrant
+
+| Half Vertical | Quadrant |
+| --- | --- |
+| ![Half Vertical view](assets/OsrsCloggerHalfVertical.png) | ![Quadrant view](assets/OsrsCloggerQuadrant.png) |
+
 ## Development
 
 Requires [Docker](https://docs.docker.com/get-docker/) with Buildx. Everything runs in the official [trmnlp](https://github.com/usetrmnl/trmnlp) image; the version is set by the `FROM` line in `Dockerfile`. Run `make help` to list every target.
 
 ```bash
 make build-dev    # build the development image (…:local-dev)
-make start        # (re)start the dev server with live reload at http://localhost:4567
+make start        # restart the dev server with live reload at http://localhost:4567
 make stop         # stop the dev server
 make logs         # follow server output
 make lint         # trmnlp lint
