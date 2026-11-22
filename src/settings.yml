@@ -13,7 +13,6 @@ framework_version: latest
 polling_url: |-
   https://templeosrs.com/api/collection-log/player_collection_log.php?player={{ rsn | url_encode }}&categories=all&onlyitems=1
   https://templeosrs.com/api/collection-log/player_recent_items.php?player={{ rsn | url_encode }}&count=12&onlynotable={{ only_notable | default: 0 }}
-  https://templeosrs.com/api/collection-log/categories.php
 polling_headers: 'User-Agent=TRMNL-OSRS-Collection-Log/1.0'
 name: OSRS Collection Log
 description: 'OSRS Collection Log overview'

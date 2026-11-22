@@ -27,7 +27,7 @@ endef
 
 .DEFAULT_GOAL := build
 
-.PHONY: help remove build build-dev test which-image run shell pull push release start stop logs lint plugin-test publish zip inline-icons
+.PHONY: help remove build build-dev test which-image run shell pull push release start stop logs lint plugin-test publish zip inline-icons update-categories
 
 help:			## Show help menu
 	@grep -E '^[a-zA-Z_\%-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -97,3 +97,6 @@ zip:			## Package src/ as a flat ZIP for TRMNL "Import new" (writes _build/${PRO
 
 inline-icons:	## Download static icons to assets/icons/ and inline them into src/shared.liquid
 	@docker run --rm --entrypoint python3 -v "$(CURDIR):/plugin" ${IMAGE_FULL_NAME}:${IMAGE_VERSION}-dev scripts/inline_icons.py
+
+update-categories:	## Re-bake TempleOSRS's category map into src/transform.py (run after new OSRS content)
+	@docker run --rm --entrypoint python3 -v "$(CURDIR):/plugin" ${IMAGE_FULL_NAME}:${IMAGE_VERSION}-dev scripts/update_categories.py

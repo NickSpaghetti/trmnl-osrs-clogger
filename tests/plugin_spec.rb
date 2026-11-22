@@ -2,30 +2,6 @@
 
 # Run with: trmnlp test (or trmnlp test --report report)
 RSpec.describe 'OSRS Collection Log' do
-  let(:categories_payload) do
-    {
-      bosses: {
-        abyssal_sire: [13_262, 25_624, 7979, 4151],
-        alchemical_hydra: [22_746, 22_988, 23_077],
-        barrows_chests: [4732, 4708, 4716, 4724, 4753, 4751]
-      },
-      raids: {
-        chambers_of_xeric: [20_997, 21_003, 21_018],
-        theatre_of_blood: [22_325, 22_324]
-      },
-      clues: {
-        master_treasure_trails: [19_835, 20_011, 20_014, 23_348, 22_246, 7331, 10_284, 2641]
-      },
-      minigames: {
-        barbarian_assault: [10_551, 10_552, 10_553]
-      },
-      other: {
-        all_pets: [34_040, 12_651],
-        miscellaneous: [31_111, 31_099, 3830, 30_922]
-      }
-    }
-  end
-
   let(:player_clog_payload) do
     {
       data: {
@@ -81,8 +57,7 @@ RSpec.describe 'OSRS Collection Log' do
   let(:mocks) do
     {
       'https://templeosrs.com/api/collection-log/player_collection_log.php*' => { json: player_clog_payload },
-      'https://templeosrs.com/api/collection-log/player_recent_items.php*' => { json: recent_items_payload },
-      'https://templeosrs.com/api/collection-log/categories.php*' => { json: categories_payload }
+      'https://templeosrs.com/api/collection-log/player_recent_items.php*' => { json: recent_items_payload }
     }
   end
 
@@ -99,6 +74,8 @@ RSpec.describe 'OSRS Collection Log' do
     expect(screen).to have_text('Clues')
     expect(screen).to have_text('Minigames')
     expect(screen).to have_text('Other')
+    expect(screen).to have_text('/339')
+    expect(screen).to have_text('/611')
     expect(screen).to have_text('III: Steel')
     expect(screen).to have_text('IV: Black')
     expect(screen).to have_text('Collections Logged: 637/700')

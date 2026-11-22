@@ -62,6 +62,8 @@ make stop         # stop the dev server
 make logs         # follow server output
 make lint         # trmnlp lint
 make plugin-test  # trmnlp test --report report
+make inline-icons # re-download static icons into assets/icons/ and inline them into src/shared.liquid
+make update-categories # re-bake TempleOSRS's category map into src/transform.py
 
 make build        # build the production image (…:local), plugin baked in
 make run          # serve the production image at http://localhost:4567
@@ -111,14 +113,15 @@ docker run --rm -v "$(pwd):/plugin" $(make -s which-image)-dev build --png   # w
 │   ├── CODEOWNERS
 │   └── workflows/
 │       ├── ci.yml           # lint + test on pull requests and main
-│       └── release.yml      # manual release
+│       ├── release.yml      # manual release
+│       └── update-categories.yml  # weekly category map refresh (opens a PR)
 ├── Dockerfile               # development + production targets, based on trmnl/trmnlp
 ├── Makefile                 # image build, dev server, lint, tests
 ├── tests.yaml               # container-structure-test spec
 ├── .trmnlp.yml              # local dev config (not uploaded)
 ├── src/
 │   ├── settings.yml         # plugin config: polling URLs, form fields
-│   ├── transform.py         # combines the 3 API responses into display data
+│   ├── transform.py         # turns the 2 API responses into display data
 │   ├── shared.liquid        # styles and reusable templates
 │   ├── full.liquid
 │   ├── half_horizontal.liquid
@@ -130,11 +133,12 @@ docker run --rm -v "$(pwd):/plugin" $(make -s which-image)-dev build --png   # w
 
 ### How the data works
 
-`src/settings.yml` polls three TempleOSRS endpoints:
+`src/settings.yml` polls two TempleOSRS endpoints on each refresh:
 
 1. `player_collection_log.php`: player totals, hiscores rank, and the IDs of every item obtained
 2. `player_recent_items.php`: the 12 most recent drops
-3. `categories.php`: which items belong to each of the 5 top-level tabs
+
+Which items belong to each of the 5 top-level tabs comes from TempleOSRS's `categories.php`, but that list only changes when Jagex adds new items, so it is baked into `src/transform.py` instead of fetched every refresh. TempleOSRS asks for at most 5 requests per minute and TRMNL's servers share IP addresses, so fewer requests means fewer `429 Too Many Requests` errors. Run `make update-categories` after a content update that adds collection log slots. The **Update categories** GitHub Action does this every Thursday and opens a pull request when the list changes.
 
 `src/transform.py` (a TRMNL serverless transform) counts obtained items per tab, works out the rank (Bronze 100 → Dragon 1,200 → Gilded at 90% of slots, rounded down to the nearest 25), and builds the icon URLs.
 
