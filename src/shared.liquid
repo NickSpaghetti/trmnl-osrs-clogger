@@ -7,41 +7,15 @@
     object-fit: contain;
     display: block;
   }
-  .osrs-cat-icon {
-    width: calc(36px * var(--ui-scale, 1));
-    height: calc(36px * var(--ui-scale, 1));
-  }
-  .osrs-book-icon {
-    width: calc(40px * var(--ui-scale, 1));
-    height: calc(40px * var(--ui-scale, 1));
-  }
-  .osrs-book-icon--sm {
-    width: calc(28px * var(--ui-scale, 1));
-    height: calc(28px * var(--ui-scale, 1));
-  }
-  .osrs-drop-icon {
-    width: calc(36px * var(--ui-scale, 1));
-    height: calc(36px * var(--ui-scale, 1));
-  }
-  .osrs-drop-icon--sm {
-    width: calc(28px * var(--ui-scale, 1));
-    height: calc(28px * var(--ui-scale, 1));
-  }
-  .osrs-cat-icon--sm {
-    width: calc(22px * var(--ui-scale, 1));
-    height: calc(22px * var(--ui-scale, 1));
-  }
   .osrs-book-frame {
-    width: calc(56px * var(--ui-scale, 1));
-    height: calc(56px * var(--ui-scale, 1));
+    padding: 6px;
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
     border: 2px solid var(--framework-text-primary, #000);
   }
   .osrs-book-frame--sm {
-    width: calc(40px * var(--ui-scale, 1));
-    height: calc(40px * var(--ui-scale, 1));
+    padding: 4px;
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
@@ -71,8 +45,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: calc(36px * var(--ui-scale, 1));
-    height: calc(36px * var(--ui-scale, 1));
     overflow: visible;
   }
   .osrs-drop-slot img {
@@ -95,19 +67,6 @@
   .osrs-bar-wrap .progress-bar {
     width: 100%;
   }
-  .screen--portrait .view--full .osrs-cat-icon,
-  .screen--portrait .view--full .osrs-drop-icon {
-    width: calc(56px * var(--ui-scale, 1));
-    height: calc(56px * var(--ui-scale, 1));
-  }
-  .screen--portrait .view--full .osrs-book-frame {
-    width: calc(72px * var(--ui-scale, 1));
-    height: calc(72px * var(--ui-scale, 1));
-  }
-  .screen--portrait .view--full .osrs-book-icon {
-    width: calc(52px * var(--ui-scale, 1));
-    height: calc(52px * var(--ui-scale, 1));
-  }
   .screen--dark-mode .osrs-sprite {
     filter: drop-shadow(1px 0 0 #fff) drop-shadow(-1px 0 0 #fff) drop-shadow(0 1px 0 #fff) drop-shadow(0 -1px 0 #fff);
   }
@@ -117,8 +76,8 @@
 <div class="progress-bar w--full {{ bar_class }}">
   {% if show_header %}
   <div class="content">
-    <span class="label label--small">{{ bar_label }}</span>
-    <span class="value value--xxsmall value--tnums">{{ bar_value }}</span>
+    <span class="label label--small lg:label--large">{{ bar_label }}</span>
+    <span class="value value--xxsmall lg:value--small value--tnums">{{ bar_value }}</span>
   </div>
   {% endif %}
   <div class="track">
@@ -137,9 +96,9 @@
 
 {% template osrs_error_state %}
 <div class="layout layout--col layout--center gap--small p--4">
-  <img class="image image-dither osrs-sprite osrs-book-icon" src="{{ book_icon_url }}" alt="Collection Log">
+  <img class="image image-dither osrs-sprite osrs-book-icon w--[40px] h--[40px] lg:w--[56px] lg:h--[56px]" src="{{ book_icon_url }}" alt="Collection Log">
   <span class="title title--small text--center">Collection Log Unavailable</span>
   <span class="description text--center" data-clamp="3">{{ error }}</span>
-  <span class="label label--small label--outline">Sync via TempleOSRS RuneLite Plugin</span>
+  <span class="label label--small lg:label--large label--outline">Sync via TempleOSRS RuneLite Plugin</span>
 </div>
 {% endtemplate %}

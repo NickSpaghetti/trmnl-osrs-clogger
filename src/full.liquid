@@ -4,9 +4,9 @@
   <div class="grid grid--cols-5 portrait:grid--cols-6 gap--small w--full">
     {% for cat in categories %}
     <div class="osrs-card rounded--small bg--gray-75 p--2 flex flex--col flex--center-x gap--xsmall {% if forloop.index <= 3 %}portrait:col--span-2{% else %}portrait:col--span-3{% endif %}">
-      <span class="label label--small portrait:label--base text--center" data-clamp="1">{{ cat.name }}</span>
-      <img class="image image-dither osrs-sprite osrs-cat-icon" src="{{ osrs_icons[cat.icon] }}" alt="{{ cat.name }}">
-      <span class="value value--xxsmall portrait:value--small value--tnums text--center">{{ cat.obtained }}/{{ cat.total }}</span>
+      <span class="label label--small lg:label--large portrait:label--base text--center" data-clamp="1">{{ cat.name }}</span>
+      <img class="image image-dither osrs-sprite osrs-cat-icon w--[36px] h--[36px] portrait:w--[56px] portrait:h--[56px] lg:w--[56px] lg:h--[56px]" src="{{ osrs_icons[cat.icon] }}" alt="{{ cat.name }}">
+      <span class="value value--xxsmall lg:value--small portrait:value--small value--tnums text--center">{{ cat.obtained }}/{{ cat.total }}</span>
       <div class="osrs-bar-wrap">
         {% render "osrs_progress_bar", bar_class: "progress-bar--small", show_header: false, pct: cat.pct %}
       </div>
@@ -18,9 +18,9 @@
   <div class="flex flex--row flex--center-y gap--medium w--full">
     <div class="osrs-rank-col flex flex--col flex--center-x gap--xsmall">
       <div class="osrs-book-frame rounded--small bg--gray-75 flex flex--center">
-        <img class="image image-dither osrs-sprite osrs-book-icon" src="{{ osrs_icons[current_rank.icon] }}" alt="{{ current_rank.name }}">
+        <img class="image image-dither osrs-sprite osrs-book-icon w--[40px] h--[40px] portrait:w--[56px] portrait:h--[56px] lg:w--[56px] lg:h--[56px]" src="{{ osrs_icons[current_rank.icon] }}" alt="{{ current_rank.name }}">
       </div>
-      <span class="label label--small portrait:label--base osrs-rank-label text--center">{{ current_rank.label }}</span>
+      <span class="label label--small lg:label--large portrait:label--base osrs-rank-label text--center">{{ current_rank.label }}</span>
     </div>
 
     <div class="osrs-flex-grow flex flex--col gap--xsmall">
@@ -30,8 +30,8 @@
         {% render "osrs_progress_bar", bar_class: "progress-bar--large", show_header: true, bar_label: rank_bar_label, bar_value: rank_bar_val, pct: rank_pct %}
       </div>
       <div class="flex flex--row flex--between w--full">
-        <span class="label label--small">{{ total_finished }}/{{ total_available }} Total ({{ overall_pct }}%)</span>
-        <span class="label label--small">
+        <span class="label label--small lg:label--large lg:portrait:label--base">{{ total_finished }}/{{ total_available }} Total ({{ overall_pct }}%)</span>
+        <span class="label label--small lg:label--large lg:portrait:label--base">
           {% if cats_available > 0 %}{{ cats_finished }}/{{ cats_available }} Greenlogged{% endif %}
           {% if hiscores_rank %} &middot; Rank {{ hiscores_rank }}{% endif %}
         </span>
@@ -40,18 +40,18 @@
 
     <div class="osrs-rank-col flex flex--col flex--center-x gap--xsmall">
       <div class="osrs-book-frame rounded--small bg--gray-75 flex flex--center">
-        <img class="image image-dither osrs-sprite osrs-book-icon" src="{{ osrs_icons[next_rank.icon] }}" alt="{{ next_rank.name }}">
+        <img class="image image-dither osrs-sprite osrs-book-icon w--[40px] h--[40px] portrait:w--[56px] portrait:h--[56px] lg:w--[56px] lg:h--[56px]" src="{{ osrs_icons[next_rank.icon] }}" alt="{{ next_rank.name }}">
       </div>
-      <span class="label label--small portrait:label--base osrs-rank-label text--center">{{ next_rank.label }}</span>
+      <span class="label label--small lg:label--large portrait:label--base osrs-rank-label text--center">{{ next_rank.label }}</span>
     </div>
   </div>
 
   <!-- Bottom Row: Latest Collections (12 most recent items) -->
   <div class="flex flex--col gap--xsmall w--full">
     <div class="flex flex--row flex--between flex--center-y w--full">
-      <span class="label label--small">Latest Collections{% if only_notable %} (Notable){% endif %}</span>
+      <span class="label label--small lg:label--large">Latest Collections{% if only_notable %} (Notable){% endif %}</span>
       {% if last_updated != "" %}
-      <span class="label label--small">Synced {{ last_updated }}</span>
+      <span class="label label--small lg:label--large">Synced {{ last_updated }}</span>
       {% endif %}
     </div>
     <div class="osrs-tray rounded--small bg--gray-75 p--2 w--full">
@@ -59,7 +59,7 @@
       <div class="grid grid--cols-12 portrait:grid--cols-6 gap--xsmall w--full">
         {% for item in recent_items limit: 12 %}
         <div class="flex flex--col flex--center">
-          <img class="image image-dither osrs-sprite osrs-drop-icon" src="{{ item.icon_url }}" alt="{{ item.name }}">
+          <img class="image image-dither osrs-sprite osrs-drop-icon w--[36px] h--[36px] portrait:w--[56px] portrait:h--[56px] lg:w--[56px] lg:h--[56px]" src="{{ item.icon_url }}" alt="{{ item.name }}">
         </div>
         {% endfor %}
       </div>
