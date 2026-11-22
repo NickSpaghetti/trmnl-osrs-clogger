@@ -3,7 +3,7 @@
   <!-- Rank + Big Counter -->
   <div class="flex flex--row flex--center-y gap--small w--full">
     <div class="osrs-book-frame--sm rounded--small bg--gray-75 flex flex--center">
-      <img class="image image-dither osrs-sprite osrs-book-icon--sm" src="{{ current_rank.icon_url }}" alt="{{ current_rank.name }}">
+      <img class="image image-dither osrs-sprite osrs-book-icon--sm" src="{{ osrs_icons[current_rank.icon] }}" alt="{{ current_rank.name }}">
     </div>
     <div class="flex flex--col">
       <span class="value value--small value--tnums">{{ total_finished }}/{{ total_available }}</span>
@@ -38,8 +38,8 @@
 
 {% capture title_text %}{{ player_name }}{% endcapture %}
 {% capture instance_text %}{{ game_mode }}{% endcapture %}
-{% render "osrs_title_bar", book_icon_url: book_icon_url, title_text: title_text, instance_text: instance_text %}
+{% render "osrs_title_bar", book_icon_url: osrs_icons.collection_log, title_text: title_text, instance_text: instance_text %}
 {% else %}
-{% render "osrs_error_state", book_icon_url: book_icon_url, error: error %}
-{% render "osrs_title_bar", book_icon_url: book_icon_url, title_text: "Collection Log", instance_text: player_name %}
+{% render "osrs_error_state", book_icon_url: osrs_icons.collection_log, error: error %}
+{% render "osrs_title_bar", book_icon_url: osrs_icons.collection_log, title_text: "Collection Log", instance_text: player_name %}
 {% endif %}

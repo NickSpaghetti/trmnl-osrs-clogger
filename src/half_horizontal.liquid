@@ -3,7 +3,7 @@
   <!-- Top Band: Rank Progress -->
   <div class="osrs-no-shrink flex flex--row flex--center-y gap--small w--full">
     <div class="osrs-book-frame--sm rounded--small bg--gray-75 flex flex--center">
-      <img class="image image-dither osrs-sprite osrs-book-icon--sm" src="{{ current_rank.icon_url }}" alt="{{ current_rank.name }}">
+      <img class="image image-dither osrs-sprite osrs-book-icon--sm" src="{{ osrs_icons[current_rank.icon] }}" alt="{{ current_rank.name }}">
     </div>
     <div class="osrs-flex-grow osrs-bar-wrap">
       {% capture rank_bar_label %}{{ current_rank.label }} &rarr; {{ next_rank.label }}{% endcapture %}
@@ -11,7 +11,7 @@
       {% render "osrs_progress_bar", bar_class: "progress-bar--small", show_header: true, bar_label: rank_bar_label, bar_value: rank_bar_val, pct: rank_pct %}
     </div>
     <div class="osrs-book-frame--sm rounded--small bg--gray-75 flex flex--center">
-      <img class="image image-dither osrs-sprite osrs-book-icon--sm" src="{{ next_rank.icon_url }}" alt="{{ next_rank.name }}">
+      <img class="image image-dither osrs-sprite osrs-book-icon--sm" src="{{ osrs_icons[next_rank.icon] }}" alt="{{ next_rank.name }}">
     </div>
   </div>
 
@@ -19,7 +19,7 @@
   <div class="osrs-no-shrink grid grid--cols-5 gap--xsmall w--full">
     {% for cat in categories %}
     <div class="osrs-card rounded--small bg--gray-75 p--1 flex flex--row flex--center gap--xsmall">
-      <img class="image image-dither osrs-sprite osrs-cat-icon--sm" src="{{ cat.icon_url }}" alt="{{ cat.name }}">
+      <img class="image image-dither osrs-sprite osrs-cat-icon--sm" src="{{ osrs_icons[cat.icon] }}" alt="{{ cat.name }}">
       <div class="flex flex--col">
         <span class="label label--small">{{ cat.name }}</span>
         <span class="label label--small value--tnums">{{ cat.obtained }}/{{ cat.total }}</span>
@@ -48,8 +48,8 @@
 
 {% capture title_text %}Collection Log: {{ player_name }}{% endcapture %}
 {% capture instance_text %}Account Type {{ game_mode }}: {{ total_finished }}/{{ total_available }}{% endcapture %}
-{% render "osrs_title_bar", book_icon_url: book_icon_url, title_text: title_text, instance_text: instance_text %}
+{% render "osrs_title_bar", book_icon_url: osrs_icons.collection_log, title_text: title_text, instance_text: instance_text %}
 {% else %}
-{% render "osrs_error_state", book_icon_url: book_icon_url, error: error %}
-{% render "osrs_title_bar", book_icon_url: book_icon_url, title_text: "OSRS Collection Log", instance_text: player_name %}
+{% render "osrs_error_state", book_icon_url: osrs_icons.collection_log, error: error %}
+{% render "osrs_title_bar", book_icon_url: osrs_icons.collection_log, title_text: "OSRS Collection Log", instance_text: player_name %}
 {% endif %}

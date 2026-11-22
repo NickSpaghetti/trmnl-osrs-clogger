@@ -10,26 +10,28 @@
 
 from typing import Any, Dict, List, Optional, Set, Tuple, TypedDict
 
+# Latest Collections icons depend on each player's drops, so they load from RuneLite's CDN.
 ICON_BASE = "https://static.runelite.net/cache/item/icon"
 
-# OSRS item IDs used for icons (see https://oldschool.runescape.wiki/w/Item_IDs).
+# Static icons are inlined into src/shared.liquid (see assets/icons/manifest.json and
+# `make inline-icons`); these are their names in the `osrs_icons` lookup.
 # Category icons
-ELYSIAN_SIGIL = 12819
-TWISTED_BOW = 20997
-CLUE_SCROLL = 2801
-FIGHTER_TORSO = 10551
-CHAMPIONS_CAPE = 21439
+ELYSIAN_SIGIL = "elysian_sigil"
+TWISTED_BOW = "twisted_bow"
+CLUE_SCROLL = "clue_scroll"
+FIGHTER_TORSO = "fighter_torso"
+CHAMPIONS_CAPE = "champions_cape"
 # Collection log books, one per rank
-COLLECTION_LOG = 22711
-COLLECTION_LOG_BRONZE = 30579
-COLLECTION_LOG_IRON = 30581
-COLLECTION_LOG_STEEL = 30583
-COLLECTION_LOG_BLACK = 30585
-COLLECTION_LOG_MITHRIL = 30587
-COLLECTION_LOG_ADAMANT = 30589
-COLLECTION_LOG_RUNE = 30591
-COLLECTION_LOG_DRAGON = 30593
-COLLECTION_LOG_GILDED = 30595
+COLLECTION_LOG = "collection_log"
+COLLECTION_LOG_BRONZE = "collection_log_bronze"
+COLLECTION_LOG_IRON = "collection_log_iron"
+COLLECTION_LOG_STEEL = "collection_log_steel"
+COLLECTION_LOG_BLACK = "collection_log_black"
+COLLECTION_LOG_MITHRIL = "collection_log_mithril"
+COLLECTION_LOG_ADAMANT = "collection_log_adamant"
+COLLECTION_LOG_RUNE = "collection_log_rune"
+COLLECTION_LOG_DRAGON = "collection_log_dragon"
+COLLECTION_LOG_GILDED = "collection_log_gilded"
 
 # Unique collection log slots; only used if TempleOSRS omits the total.
 DEFAULT_TOTAL_SLOTS = 1734
@@ -46,7 +48,7 @@ class RankDef(TypedDict):
     tier: str
     name: str
     threshold: int
-    icon_id: int
+    icon: str
 
 
 class Rank(TypedDict):
@@ -54,13 +56,13 @@ class Rank(TypedDict):
     name: str
     label: str
     threshold: int
-    icon_url: str
+    icon: str
 
 
 class Category(TypedDict):
     key: str
     name: str
-    icon_url: str
+    icon: str
     obtained: int
     total: int
     pct: int
@@ -74,7 +76,7 @@ class RecentItem(TypedDict):
     icon_url: str
 
 
-CATEGORY_META: List[Tuple[str, str, int]] = [
+CATEGORY_META: List[Tuple[str, str, str]] = [
     ("bosses", "Bosses", ELYSIAN_SIGIL),
     ("raids", "Raids", TWISTED_BOW),
     ("clues", "Clues", CLUE_SCROLL),
@@ -90,15 +92,15 @@ GAME_MODES: Dict[int, str] = {
 }
 
 BASE_RANKS: List[RankDef] = [
-    {"tier": "",     "name": "Unranked", "threshold": 0,    "icon_id": COLLECTION_LOG},
-    {"tier": "I",    "name": "Bronze",   "threshold": 100,  "icon_id": COLLECTION_LOG_BRONZE},
-    {"tier": "II",   "name": "Iron",     "threshold": 300,  "icon_id": COLLECTION_LOG_IRON},
-    {"tier": "III",  "name": "Steel",    "threshold": 500,  "icon_id": COLLECTION_LOG_STEEL},
-    {"tier": "IV",   "name": "Black",    "threshold": 700,  "icon_id": COLLECTION_LOG_BLACK},
-    {"tier": "V",    "name": "Mithril",  "threshold": 900,  "icon_id": COLLECTION_LOG_MITHRIL},
-    {"tier": "VI",   "name": "Adamant",  "threshold": 1000, "icon_id": COLLECTION_LOG_ADAMANT},
-    {"tier": "VII",  "name": "Rune",     "threshold": 1100, "icon_id": COLLECTION_LOG_RUNE},
-    {"tier": "VIII", "name": "Dragon",   "threshold": 1200, "icon_id": COLLECTION_LOG_DRAGON},
+    {"tier": "",     "name": "Unranked", "threshold": 0,    "icon": COLLECTION_LOG},
+    {"tier": "I",    "name": "Bronze",   "threshold": 100,  "icon": COLLECTION_LOG_BRONZE},
+    {"tier": "II",   "name": "Iron",     "threshold": 300,  "icon": COLLECTION_LOG_IRON},
+    {"tier": "III",  "name": "Steel",    "threshold": 500,  "icon": COLLECTION_LOG_STEEL},
+    {"tier": "IV",   "name": "Black",    "threshold": 700,  "icon": COLLECTION_LOG_BLACK},
+    {"tier": "V",    "name": "Mithril",  "threshold": 900,  "icon": COLLECTION_LOG_MITHRIL},
+    {"tier": "VI",   "name": "Adamant",  "threshold": 1000, "icon": COLLECTION_LOG_ADAMANT},
+    {"tier": "VII",  "name": "Rune",     "threshold": 1100, "icon": COLLECTION_LOG_RUNE},
+    {"tier": "VIII", "name": "Dragon",   "threshold": 1200, "icon": COLLECTION_LOG_DRAGON},
 ]
 
 
@@ -113,7 +115,7 @@ def format_rank(rank_def: RankDef) -> Rank:
         "name": rank_def["name"],
         "label": label,
         "threshold": rank_def["threshold"],
-        "icon_url": icon_url(rank_def["icon_id"]),
+        "icon": rank_def["icon"],
     }
 
 
@@ -124,7 +126,7 @@ def compute_ranks(total_finished: int, total_available: int) -> Tuple[Rank, Rank
         else GILDED_FALLBACK_THRESHOLD
     )
     ranks: List[RankDef] = list(BASE_RANKS) + [
-        {"tier": "IX", "name": "Gilded", "threshold": gilded_threshold, "icon_id": COLLECTION_LOG_GILDED},
+        {"tier": "IX", "name": "Gilded", "threshold": gilded_threshold, "icon": COLLECTION_LOG_GILDED},
     ]
 
     current_idx = 0
@@ -147,7 +149,7 @@ def compute_ranks(total_finished: int, total_available: int) -> Tuple[Rank, Rank
             "name": "Complete",
             "label": "Complete",
             "threshold": total_available,
-            "icon_url": icon_url(COLLECTION_LOG_GILDED),
+            "icon": COLLECTION_LOG_GILDED,
         }
         rank_pct = min(100, round((total_finished / max(1, total_available)) * 100))
         bar_target = total_available
@@ -158,7 +160,7 @@ def compute_ranks(total_finished: int, total_available: int) -> Tuple[Rank, Rank
 
 def compute_categories(obtained_ids: Set[int], categories_map: Any) -> List[Category]:
     result: List[Category] = []
-    for key, label, icon_id in CATEGORY_META:
+    for key, label, icon in CATEGORY_META:
         subcats = categories_map.get(key) if isinstance(categories_map, dict) else None
         unique_items: Set[int] = set()
         if isinstance(subcats, dict):
@@ -173,7 +175,7 @@ def compute_categories(obtained_ids: Set[int], categories_map: Any) -> List[Cate
         result.append({
             "key": key,
             "name": label,
-            "icon_url": icon_url(icon_id),
+            "icon": icon,
             "obtained": obtained,
             "total": total,
             "pct": pct,
@@ -230,7 +232,7 @@ def run(input: JsonDict) -> JsonDict:
             "ok": False,
             "error": err_msg or f"No synced Collection Log found for '{requested_rsn}'.",
             "player_name": requested_rsn,
-            "book_icon_url": icon_url(COLLECTION_LOG),
+            "book_icon": COLLECTION_LOG,
             "only_notable": only_notable,
             "trmnl": trmnl_meta,
         }
@@ -280,7 +282,7 @@ def run(input: JsonDict) -> JsonDict:
         "ok": True,
         "player_name": player_name,
         "game_mode": game_mode,
-        "book_icon_url": icon_url(COLLECTION_LOG),
+        "book_icon": COLLECTION_LOG,
         "total_finished": total_finished,
         "total_available": total_available,
         "overall_pct": overall_pct,
