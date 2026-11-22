@@ -1,0 +1,61 @@
+name: Update categories
+
+# OSRS updates weekly (usually Wednesday). Re-bake TempleOSRS's collection log
+# category map into src/transform.py and open a pull request if it changed.
+on:
+  schedule:
+    - cron: "0 12 * * 4"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: update-categories
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Build development image
+        run: make build-dev
+      - name: Update category map
+        run: make update-categories
+      - name: Check for changes
+        id: diff
+        run: |
+          if git diff --quiet -- src/transform.py; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            git diff --stat -- src/transform.py
+          fi
+      # Pull requests opened with GITHUB_TOKEN don't trigger the CI workflow,
+      # so lint and test here before opening one.
+      - name: trmnlp lint
+        if: steps.diff.outputs.changed == 'true'
+        run: make lint
+      - name: trmnlp test
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          CI: "true"
+        run: make plugin-test
+      - name: Open pull request
+        if: steps.diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v8
+        with:
+          sign-commits: true
+          branch: automation/update-categories
+          delete-branch: true
+          add-paths: src/transform.py
+          commit-message: Update collection log categories from TempleOSRS
+          title: Update collection log categories from TempleOSRS
+          body: |
+            TempleOSRS's collection log category list changed, most likely because of a new OSRS content update.
+
+            This re-bakes `CATEGORY_ITEMS` in `src/transform.py` with `make update-categories`. Lint and plugin tests passed in the workflow run.
+
+            After merging, run the **Release** workflow to publish it to TRMNL.

@@ -3,7 +3,7 @@
   <!-- Rank Header -->
   <div class="osrs-no-shrink flex flex--row flex--center-y gap--small w--full">
     <div class="osrs-book-frame--sm rounded--small bg--gray-75 flex flex--center">
-      <img class="image image-dither osrs-sprite osrs-book-icon--sm" src="{{ current_rank.icon_url }}" alt="{{ current_rank.name }}">
+      <img class="image image-dither osrs-sprite osrs-book-icon--sm" src="{{ osrs_icons[current_rank.icon] }}" alt="{{ current_rank.name }}">
     </div>
     <div class="osrs-flex-grow osrs-bar-wrap">
       {% capture rank_bar_label %}{{ current_rank.label }} &rarr; {{ next_rank.label }}{% endcapture %}
@@ -15,7 +15,7 @@
   <!-- 5 Categories List -->
   {% for cat in categories %}
   <div class="osrs-no-shrink osrs-card rounded--small bg--gray-75 px--1 flex flex--row flex--center-y gap--small w--full">
-    <img class="image image-dither osrs-sprite osrs-cat-icon--sm" src="{{ cat.icon_url }}" alt="{{ cat.name }}">
+    <img class="image image-dither osrs-sprite osrs-cat-icon--sm" src="{{ osrs_icons[cat.icon] }}" alt="{{ cat.name }}">
     <div class="osrs-flex-grow osrs-bar-wrap">
       {% capture cat_val %}{{ cat.obtained }}/{{ cat.total }}{% endcapture %}
       {% render "osrs_progress_bar", bar_class: "progress-bar--xsmall", show_header: true, bar_label: cat.name, bar_value: cat_val, pct: cat.pct %}
@@ -43,8 +43,8 @@
 
 {% capture title_text %}{{ player_name }}{% endcapture %}
 {% capture instance_text %}{{ total_finished }}/{{ total_available }}{% endcapture %}
-{% render "osrs_title_bar", book_icon_url: book_icon_url, title_text: title_text, instance_text: instance_text %}
+{% render "osrs_title_bar", book_icon_url: osrs_icons.collection_log, title_text: title_text, instance_text: instance_text %}
 {% else %}
-{% render "osrs_error_state", book_icon_url: book_icon_url, error: error %}
-{% render "osrs_title_bar", book_icon_url: book_icon_url, title_text: "Collection Log", instance_text: player_name %}
+{% render "osrs_error_state", book_icon_url: osrs_icons.collection_log, error: error %}
+{% render "osrs_title_bar", book_icon_url: osrs_icons.collection_log, title_text: "Collection Log", instance_text: player_name %}
 {% endif %}

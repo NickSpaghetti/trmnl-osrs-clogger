@@ -27,7 +27,7 @@ endef
 
 .DEFAULT_GOAL := build
 
-.PHONY: help remove build build-dev test which-image run shell pull push release start stop logs lint plugin-test publish
+.PHONY: help remove build build-dev test which-image run shell pull push release start stop logs lint plugin-test publish zip inline-icons update-categories
 
 help:			## Show help menu
 	@grep -E '^[a-zA-Z_\%-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -84,6 +84,19 @@ lint:			## Run trmnlp lint against the source
 plugin-test:	## Run trmnlp plugin tests (writes report/)
 	@docker run --rm -e CI -v "$(CURDIR):/plugin" ${IMAGE_FULL_NAME}:${IMAGE_VERSION}-dev test --report report
 
-publish:		## Publish the plugin to TRMNL (needs TRMNL_API_KEY)
+publish:		## Publish to an existing TRMNL plugin (needs TRMNL_API_KEY and TRMNL_PLUGIN_ID)
 	@test -n "$$TRMNL_API_KEY" || (echo "TRMNL_API_KEY is not set" && exit 1)
-	@docker run --rm -e TRMNL_API_KEY -v "$(CURDIR):/plugin" ${IMAGE_FULL_NAME}:${IMAGE_VERSION}-dev push --force
+	@test -n "$$TRMNL_PLUGIN_ID" || (echo "TRMNL_PLUGIN_ID is not set; without it trmnlp push creates a new plugin" && exit 1)
+	@docker run --rm -e TRMNL_API_KEY -v "$(CURDIR):/plugin" ${IMAGE_FULL_NAME}:${IMAGE_VERSION}-dev push --force --id "$$TRMNL_PLUGIN_ID"
+
+zip:			## Package src/ as a flat ZIP for TRMNL "Import new" (writes _build/${PROJECT_NAME}.zip)
+	@mkdir -p _build
+	@rm -f _build/${PROJECT_NAME}.zip
+	@cd src && zip -q -X ../_build/${PROJECT_NAME}.zip settings.yml *.liquid transform.*
+	@unzip -l _build/${PROJECT_NAME}.zip
+
+inline-icons:	## Download static icons to assets/icons/ and inline them into src/shared.liquid
+	@docker run --rm --entrypoint python3 -v "$(CURDIR):/plugin" ${IMAGE_FULL_NAME}:${IMAGE_VERSION}-dev scripts/inline_icons.py
+
+update-categories:	## Re-bake TempleOSRS's category map into src/transform.py (run after new OSRS content)
+	@docker run --rm --entrypoint python3 -v "$(CURDIR):/plugin" ${IMAGE_FULL_NAME}:${IMAGE_VERSION}-dev scripts/update_categories.py

@@ -13,33 +13,38 @@ framework_version: latest
 polling_url: |-
   https://templeosrs.com/api/collection-log/player_collection_log.php?player={{ rsn | url_encode }}&categories=all&onlyitems=1
   https://templeosrs.com/api/collection-log/player_recent_items.php?player={{ rsn | url_encode }}&count=12&onlynotable={{ only_notable | default: 0 }}
-  https://templeosrs.com/api/collection-log/categories.php
 polling_headers: 'User-Agent=TRMNL-OSRS-Collection-Log/1.0'
 name: OSRS Collection Log
 description: 'OSRS Collection Log overview'
+recipe_overview: |-
+  Bring your Old School RuneScape Collection Log to your TRMNL. This plugin recreates the in-game
+  Collection Log Overview on e-ink: obtained and total slots for Bosses, Raids, Clues, Minigames
+  and Other, each with its own progress bar, plus your current collection log rank book, the next
+  rank you are working toward and how many slots you still need to reach it. It also shows your
+  total slots logged, completed categories, your collection log hiscores rank, and icons for your
+  most recent drops, so every glance at your desk reminds you what you just greenlogged. Data comes
+  from TempleOSRS, so sync your log with the TempleOSRS RuneLite plugin first. Works on TRMNL OG and
+  TRMNL X, in landscape, portrait and mashups.
 refresh_interval: 60
 custom_fields:
-  - keyname: author_bio
-    field_type: author_bio
-    name: About This Plugin
-    category: games
-    description: >-
-      Displays your Old School RuneScape Collection Log overview, category progress,
-      rank tier, and latest collection log drops powered by TempleOSRS. Requires
-      syncing your Collection Log with the TempleOSRS RuneLite plugin.
-    learn_more_url: https://templeosrs.com/collection-log/
-  - keyname: rsn
-    field_type: string
-    name: RuneScape Name (RSN)
-    description: Your OSRS username synced with TempleOSRS.
-    placeholder: Mikael
-    maxlength: 12
-    default: Mikael
-  - keyname: only_notable
-    field_type: select
-    name: Recent Drops Filter
-    description: Show all recent collection log drops or only notable drops (pets, rare clues, etc.).
-    options:
-      - All Drops: '0'
-      - Notable Only: '1'
-    default: '0'
+- keyname: author_bio
+  field_type: author_bio
+  name: About This Plugin
+  category: games
+  description: 'Shows your Old School RuneScape Collection Log overview on your TRMNL: progress for Bosses, Raids, Clues, Minigames and Other, your collection log rank and the next one, total slots, completed categories, hiscores rank and your latest drops. Your log must be synced with the TempleOSRS RuneLite plugin; see the <a href="https://templeosrs.com/faq.php" class="underline">TempleOSRS FAQ</a> for setup. Data from <a href="https://templeosrs.com" class="underline">TempleOSRS</a>, item icons from <a href="https://runelite.net" class="underline">RuneLite</a>. Report issues or suggest features on <a href="https://github.com/NickSpaghetti/trmnl-osrs-clogger/issues" class="underline">GitHub</a>. Not affiliated with Jagex or TempleOSRS.'
+  github_url: https://github.com/NickSpaghetti/trmnl-osrs-clogger
+  learn_more_url: https://templeosrs.com/collection-log/
+- keyname: rsn
+  field_type: string
+  name: RuneScape Name (RSN)
+  description: Your OSRS name as synced on <a href="https://templeosrs.com" class="underline">TempleOSRS</a>.
+  placeholder: Wide Juicy
+  maxlength: 12
+- keyname: only_notable
+  field_type: select
+  name: Recent Drops Filter
+  description: Show all recent collection log drops or only notable drops (pets, rare clues, etc.).
+  options:
+  - All Drops: '0'
+  - Notable Only: '1'
+  default: '0'

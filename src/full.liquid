@@ -1,12 +1,12 @@
 {% if ok %}
 <div class="layout layout--col layout--stretch-x gap--auto">
   <!-- Top Row: 5 OSRS Collection Log Category Cards -->
-  <div class="grid grid--cols-5 portrait:grid--cols-3 gap--small w--full">
+  <div class="grid grid--cols-5 portrait:grid--cols-6 gap--small w--full">
     {% for cat in categories %}
-    <div class="osrs-card rounded--small bg--gray-75 p--2 flex flex--col flex--center-x gap--xsmall">
-      <span class="label label--small text--center" data-clamp="1">{{ cat.name }}</span>
-      <img class="image image-dither osrs-sprite osrs-cat-icon" src="{{ cat.icon_url }}" alt="{{ cat.name }}">
-      <span class="value value--xxsmall value--tnums text--center">{{ cat.obtained }}/{{ cat.total }}</span>
+    <div class="osrs-card rounded--small bg--gray-75 p--2 flex flex--col flex--center-x gap--xsmall {% if forloop.index <= 3 %}portrait:col--span-2{% else %}portrait:col--span-3{% endif %}">
+      <span class="label label--small portrait:label--base text--center" data-clamp="1">{{ cat.name }}</span>
+      <img class="image image-dither osrs-sprite osrs-cat-icon" src="{{ osrs_icons[cat.icon] }}" alt="{{ cat.name }}">
+      <span class="value value--xxsmall portrait:value--small value--tnums text--center">{{ cat.obtained }}/{{ cat.total }}</span>
       <div class="osrs-bar-wrap">
         {% render "osrs_progress_bar", bar_class: "progress-bar--small", show_header: false, pct: cat.pct %}
       </div>
@@ -18,9 +18,9 @@
   <div class="flex flex--row flex--center-y gap--medium w--full">
     <div class="osrs-rank-col flex flex--col flex--center-x gap--xsmall">
       <div class="osrs-book-frame rounded--small bg--gray-75 flex flex--center">
-        <img class="image image-dither osrs-sprite osrs-book-icon" src="{{ current_rank.icon_url }}" alt="{{ current_rank.name }}">
+        <img class="image image-dither osrs-sprite osrs-book-icon" src="{{ osrs_icons[current_rank.icon] }}" alt="{{ current_rank.name }}">
       </div>
-      <span class="label label--small osrs-rank-label text--center">{{ current_rank.label }}</span>
+      <span class="label label--small portrait:label--base osrs-rank-label text--center">{{ current_rank.label }}</span>
     </div>
 
     <div class="osrs-flex-grow flex flex--col gap--xsmall">
@@ -40,9 +40,9 @@
 
     <div class="osrs-rank-col flex flex--col flex--center-x gap--xsmall">
       <div class="osrs-book-frame rounded--small bg--gray-75 flex flex--center">
-        <img class="image image-dither osrs-sprite osrs-book-icon" src="{{ next_rank.icon_url }}" alt="{{ next_rank.name }}">
+        <img class="image image-dither osrs-sprite osrs-book-icon" src="{{ osrs_icons[next_rank.icon] }}" alt="{{ next_rank.name }}">
       </div>
-      <span class="label label--small osrs-rank-label text--center">{{ next_rank.label }}</span>
+      <span class="label label--small portrait:label--base osrs-rank-label text--center">{{ next_rank.label }}</span>
     </div>
   </div>
 
@@ -72,10 +72,10 @@
   </div>
 </div>
 
-{% capture title_text %}Collection Log: Overview for {{ player_name }}{% endcapture %}
-{% capture instance_text %}Account Type {{ game_mode }}: {{ total_finished }}/{{ total_available }}{% endcapture %}
-{% render "osrs_title_bar", book_icon_url: book_icon_url, title_text: title_text, instance_text: instance_text %}
+{% capture title_text %}Collection Log: <span class="portrait:hidden">Overview for </span>{{ player_name }}{% endcapture %}
+{% capture instance_text %}<span class="portrait:hidden">Account Type </span>{{ game_mode }}: {{ total_finished }}/{{ total_available }}{% endcapture %}
+{% render "osrs_title_bar", book_icon_url: osrs_icons.collection_log, title_text: title_text, instance_text: instance_text %}
 {% else %}
-{% render "osrs_error_state", book_icon_url: book_icon_url, error: error %}
-{% render "osrs_title_bar", book_icon_url: book_icon_url, title_text: "OSRS Collection Log", instance_text: player_name %}
+{% render "osrs_error_state", book_icon_url: osrs_icons.collection_log, error: error %}
+{% render "osrs_title_bar", book_icon_url: osrs_icons.collection_log, title_text: "OSRS Collection Log", instance_text: player_name %}
 {% endif %}

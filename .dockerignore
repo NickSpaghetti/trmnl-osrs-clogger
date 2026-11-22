@@ -7,3 +7,5 @@ Makefile
 tests.yaml
 __pycache__
 *.py[cod]
+assets
+scripts
