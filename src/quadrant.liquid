@@ -3,11 +3,11 @@
   <!-- Rank + Big Counter -->
   <div class="flex flex--row flex--center-y gap--small w--full">
     <div class="osrs-book-frame--sm rounded--small bg--gray-75 flex flex--center">
-      <img class="image image-dither osrs-sprite osrs-book-icon--sm" src="{{ osrs_icons[current_rank.icon] }}" alt="{{ current_rank.name }}">
+      <img class="image image-dither osrs-sprite osrs-book-icon--sm w--[28px] h--[28px] lg:w--[40px] lg:h--[40px]" src="{{ osrs_icons[current_rank.icon] }}" alt="{{ current_rank.name }}">
     </div>
     <div class="flex flex--col">
-      <span class="value value--small value--tnums">{{ total_finished }}/{{ total_available }}</span>
-      <span class="label label--small">{{ current_rank.label }} ({{ overall_pct }}%)</span>
+      <span class="value value--small lg:value--large value--tnums">{{ total_finished }}/{{ total_available }}</span>
+      <span class="label label--small lg:label--large">{{ current_rank.label }} ({{ overall_pct }}%)</span>
     </div>
   </div>
 
@@ -24,13 +24,13 @@
     <div class="grid grid--cols-6 gap--xsmall w--full">
       {% for item in recent_items limit: 6 %}
       <div class="flex flex--center">
-        <img class="image image-dither osrs-sprite osrs-drop-icon--sm" src="{{ item.icon_url }}" alt="{{ item.name }}">
+        <img class="image image-dither osrs-sprite osrs-drop-icon--sm w--[28px] h--[28px] lg:w--[48px] lg:h--[48px]" src="{{ item.icon_url }}" alt="{{ item.name }}">
       </div>
       {% endfor %}
     </div>
     {% else %}
     <div class="flex flex--center p--1 w--full">
-      <span class="label label--small">No recent drops yet</span>
+      <span class="label label--small lg:label--large">No recent drops yet</span>
     </div>
     {% endif %}
   </div>
