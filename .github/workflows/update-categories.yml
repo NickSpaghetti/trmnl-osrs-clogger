@@ -23,7 +23,7 @@ jobs:
       - name: Build development image
         run: make build-dev
       - name: Update category map
-        run: make update-categories
+        run: make update-categories PR_BODY=_build/update-categories-pr.md
       - name: Check for changes
         id: diff
         run: |
@@ -51,11 +51,6 @@ jobs:
           branch: automation/update-categories
           delete-branch: true
           add-paths: src/transform.py
-          commit-message: Update collection log categories from TempleOSRS
-          title: Update collection log categories from TempleOSRS
-          body: |
-            TempleOSRS's collection log category list changed, most likely because of a new OSRS content update.
-
-            This re-bakes `CATEGORY_ITEMS` in `src/transform.py` with `make update-categories`. Lint and plugin tests passed in the workflow run.
-
-            After merging, run the **Release** workflow to publish it to TRMNL.
+          commit-message: updated collection log categories
+          title: updated collection log categories
+          body-path: _build/update-categories-pr.md

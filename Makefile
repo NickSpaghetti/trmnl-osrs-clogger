@@ -99,4 +99,4 @@ inline-icons:	## Download static icons to assets/icons/ and inline them into src
 	@docker run --rm --entrypoint python3 -v "$(CURDIR):/plugin" ${IMAGE_FULL_NAME}:${IMAGE_VERSION}-dev scripts/inline_icons.py
 
 update-categories:	## Re-bake TempleOSRS's category map into src/transform.py (run after new OSRS content)
-	@docker run --rm --entrypoint python3 -v "$(CURDIR):/plugin" ${IMAGE_FULL_NAME}:${IMAGE_VERSION}-dev scripts/update_categories.py
+	@docker run --rm --entrypoint python3 -v "$(CURDIR):/plugin" ${IMAGE_FULL_NAME}:${IMAGE_VERSION}-dev scripts/update_categories.py $(if $(PR_BODY),--pr-body "$(PR_BODY)")
